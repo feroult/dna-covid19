@@ -9,7 +9,17 @@ bq query \
     --destination_table ${TABLE} \
     --replace \
     --use_legacy_sql=false \
-"SELECT cases.*, start.start_date, DATE_DIFF(cases.date, start.start_date, DAY) outbreak_days 
+"SELECT 
+  cases.country_region,
+  cases.province_state,
+  cases.date,
+  cases.case_type,
+  cases.cases,
+  ST_GEOGPOINT(cases.long, cases.lat) long_lat,
+  cases.difference,
+  start.start_date, 
+  DATE_DIFF(cases.date, start.start_date, DAY) outbreak_days,
+  PARSE_DATETIME('%Y-%m-%d %H:%M:%S', cases.last_update_date) last_update_date
    FROM ${RAW_TABLE} cases
  INNER JOIN 
  (SELECT country_region, min(date) start_date 
