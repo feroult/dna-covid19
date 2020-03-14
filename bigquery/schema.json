@@ -41,7 +41,7 @@
     },
     {
         "name": "last_update_date",
-        "type": "DATETIME",
+        "type": "STRING",
         "mode": "NULLABLE"
     }
 ]
