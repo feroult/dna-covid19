@@ -1,0 +1,47 @@
+[
+    {
+        "name": "country_region",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "province_state",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "case_type",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "cases",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "long",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "lat",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "difference",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "last_update_date",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+    }
+]
