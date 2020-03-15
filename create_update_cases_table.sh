@@ -4,7 +4,7 @@
 
 RAW_TABLE="covid19.raw_cases"
 TABLE="covid19.cases"
-OUTBREAK_CONFIRMED_CASES="40"
+OUTBREAK_CONFIRMED_CASES="10"
 
 bq query \
     --destination_table ${TABLE} \
