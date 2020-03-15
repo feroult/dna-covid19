@@ -4,6 +4,7 @@
 
 RAW_TABLE="covid19.raw_cases"
 TABLE="covid19.cases"
+OUTBREAK_CONFIRMED_CASES="40"
 
 bq query \
     --destination_table ${TABLE} \
@@ -15,7 +16,8 @@ bq query \
   cases.date,
   cases.case_type,
   cases.cases,
-  ST_GEOGPOINT(cases.long, cases.lat) long_lat,
+  CONCAT(CAST(cases.lat as STRING),',',CAST(cases.long as STRING)) lat_long,
+  ST_GEOGPOINT(cases.long, cases.lat) point,
   cases.difference,
   start.start_date, 
   DATE_DIFF(cases.date, start.start_date, DAY) outbreak_days,
@@ -24,7 +26,7 @@ bq query \
  INNER JOIN 
  (SELECT country_region, min(date) start_date 
     FROM ${RAW_TABLE}
-   WHERE cases > 0
+   WHERE cases > ${OUTBREAK_CONFIRMED_CASES}
      and case_type = 'Confirmed'
    GROUP BY country_region
    ORDER BY country_region) start
