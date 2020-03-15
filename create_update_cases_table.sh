@@ -18,18 +18,19 @@ bq query \
   cases.cases,
   CONCAT(CAST(cases.lat as STRING),',',CAST(cases.long as STRING)) lat_long,
   ST_GEOGPOINT(cases.long, cases.lat) point,
-  cases.difference,
-  outbreak.start_date outbreak_start_date, 
-  outbreak.last_date outbreak_last_date,
-  DATE_DIFF(cases.date, outbreak.start_date, DAY) outbreak_days,
-  DATE_DIFF(outbreak.last_date, cases.date, DAY) outbreak_countdown,
-  PARSE_DATETIME('%Y-%m-%d %H:%M:%S', cases.last_update_date) last_update_date
+  start.date outbreak_start_date, 
+  last.date outbreak_last_date,
+  DATE_DIFF(cases.date, start.date, DAY) outbreak_days,
+  DATE_DIFF(last.date, cases.date, DAY) outbreak_countdown,
    FROM ${RAW_TABLE} cases
-INNER JOIN 
- (SELECT country_region, min(date) start_date, max(date) last_date
+LEFT OUTER JOIN 
+ (SELECT country_region, min(date) date
     FROM ${RAW_TABLE}
    WHERE cases > ${OUTBREAK_CONFIRMED_CASES}
      and case_type = 'Confirmed'
-   GROUP BY country_region
-   ORDER BY country_region) outbreak
-ON cases.country_region = outbreak.country_region"
+   GROUP BY country_region) start ON cases.country_region = start.country_region   
+LEFT OUTER JOIN
+ (SELECT country_region, max(date) date 
+    FROM ${RAW_TABLE}
+   WHERE case_type = 'Confirmed'
+   GROUP BY country_region) last ON cases.country_region = last.country_region"
