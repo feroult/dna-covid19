@@ -23,12 +23,11 @@ bq query \
   DATE_DIFF(cases.date, start.start_date, DAY) outbreak_days,
   PARSE_DATETIME('%Y-%m-%d %H:%M:%S', cases.last_update_date) last_update_date
    FROM ${RAW_TABLE} cases
- INNER JOIN 
+INNER JOIN 
  (SELECT country_region, min(date) start_date 
     FROM ${RAW_TABLE}
    WHERE cases > ${OUTBREAK_CONFIRMED_CASES}
      and case_type = 'Confirmed'
    GROUP BY country_region
    ORDER BY country_region) start
-   ON cases.country_region = start.country_region
-WHERE cases.date >= start.start_date"
+ON cases.country_region = start.country_region"
