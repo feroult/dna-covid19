@@ -1,5 +1,4 @@
 # Data 'n Analytics for COVID19
 
-Tools to export/import/convert [John Hopkins University Coronavirus Data Stream](https://docs.google.com/spreadsheets/d/1avGWWl1J19O_Zm0NGTGy2E-fOG05i4ljRfjl87P7FiA/edit?ts=5e5e9222#gid=0) dataset on Google Cloud BigQuery.
+Tools to export/import/convert [John Hopkins University Coronavirus Data Stream](https://github.com/CSSEGISandData/COVID-19) dataset on Google Cloud BigQuery.
 
-### TODO: Guide for creating and running scripts on GCP.
