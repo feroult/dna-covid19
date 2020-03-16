@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import csv
 import datetime
@@ -24,4 +26,3 @@ for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=',', quotechar='"'
             date = dates[i-BASE_COLS]
             count = row[i]
             writer.writerow(base + [case_type, date, count])
-            

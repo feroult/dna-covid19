@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 RAW_TABLE="covid19.raw_cases"
 TABLE="covid19.cases"
