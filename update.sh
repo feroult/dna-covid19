@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 run() {
     ./create_raw_table.sh
