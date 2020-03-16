@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 DATA_REPO="https://github.com/CSSEGISandData/COVID-19.git"
 DATA_PATH="./COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid"
 STATING_BUCKET="gs://covid19_outbreak"
@@ -13,6 +11,7 @@ convert_cases() {
 }
 
 update_staging() {
+    echo "Updating staging..."
     if [ ! -d "COVID-19" ]; then
         git clone --depth=1 ${DATA_REPO}
     else 
@@ -32,6 +31,7 @@ update_staging() {
 }
 
 create_raw_table() {
+    echo "Creating raw table..."
     bq load \
         --replace \
         --skip_leading_rows 1 \
@@ -46,5 +46,4 @@ run() {
     create_raw_table
 }
 
-(cd $DIR && run)
-
+run

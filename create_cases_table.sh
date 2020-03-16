@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+echo "Creating cases table..."
+
 RAW_TABLE="covid19.raw_cases"
 TABLE="covid19.cases"
 OUTBREAK_CONFIRMED_CASES="10"
