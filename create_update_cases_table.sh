@@ -1,7 +1,5 @@
 #!/bin/sh -xe
 
-# gcloud auth login --enable-gdrive-access
-
 RAW_TABLE="covid19.raw_cases"
 TABLE="covid19.cases"
 OUTBREAK_CONFIRMED_CASES="10"

@@ -23,7 +23,7 @@ update_staging() {
     convert_cases "Confirmed"
     convert_cases "Deaths"
     convert_cases "Recovered"
-    gsutil -m cp -r -n .staging/*.csv $STATING_BUCKET
+    gsutil -m cp -r .staging/*.csv $STATING_BUCKET
 }
 
 create_raw_table() {
