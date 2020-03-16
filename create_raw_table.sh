@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -16,7 +16,12 @@ update_staging() {
     if [ ! -d "COVID-19" ]; then
         git clone --depth=1 ${DATA_REPO}
     else 
-        (cd "COVID-19" && git pull)
+        cd "COVID-19" 
+        if [ "$(git pull)" == "Already up to date." ]; then 
+            echo "Already up to date."
+            exit 1
+        fi        
+        cd ..
     fi
     rm -rf .staging
     mkdir .staging
