@@ -1,6 +1,9 @@
 FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
 
-COPY . /app
-WORKDIR /app
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
 
-CMD /app/update.sh
+RUN pip3 install Flask gunicorn
+
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
