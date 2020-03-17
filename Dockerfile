@@ -4,6 +4,6 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY . ./
 
-RUN pip3 install Flask gunicorn
+RUN pip3 install Flask gunicorn requests
 
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
