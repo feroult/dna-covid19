@@ -17,7 +17,7 @@ create_scheduler() {
   gcloud scheduler jobs delete ${JOB_ID}
   gcloud scheduler jobs create http ${JOB_ID} \
     --http-method=GET \
-    --schedule="every 10 minutes" \
+    --schedule="every 2 minutes" \
     --uri=${URI} \
     --oidc-service-account-email=${CLIENT_SERVICE_ACCOUNT_EMAIL}
 }
