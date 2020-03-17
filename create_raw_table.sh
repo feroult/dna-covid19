@@ -16,7 +16,7 @@ update_staging() {
     if [ ! -d "COVID-19" ]; then
         git clone --depth=1 ${DATA_REPO}
     else 
-        (cd COVID-19 && git pull)
+        (cd COVID-19 && git pull >/dev/null)
     fi
     rm -rf .staging
     mkdir .staging
@@ -24,6 +24,13 @@ update_staging() {
     convert_cases "Deaths"
     convert_cases "Recovered"
     python3 ./today.py > .staging/Today.csv
+
+    NEW_HASH=$(sha256sum .staging/* | sha256sum | cut -d' ' -f1)
+    OLD_HASH=$(gsutil cat ${STAGING_BUCKET}/HASH)
+    if [ "${NEW_HASH}" == "${OLD_HASH}" ]; then
+        echo "Already up to date."
+        exit 1
+    fi
     gsutil -m cp -r .staging/*.csv ${STAGING_BUCKET}
 }
 
@@ -38,9 +45,16 @@ create_raw_table() {
         ./schema.json
 }
 
+mark_hash() {
+    NEW_HASH=$(sha256sum .staging/* | sha256sum | cut -d' ' -f1)
+    echo ${NEW_HASH} > .staging/HASH
+    gsutil cp .staging/HASH ${STAGING_BUCKET}/HASH
+}
+
 run() {
     update_staging
     create_raw_table
+    mark_hash
 }
 
 run
