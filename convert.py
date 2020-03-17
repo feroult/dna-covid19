@@ -18,6 +18,8 @@ def format_date(d):
 def format_float(s):
     return '{0:.4f}'.format(float(s))
 
+today = datetime.datetime.utcnow().date().strftime('%Y-%m-%d')
+
 for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=',', quotechar='"'):
     base = row[0:BASE_COLS]
     if isheader:
@@ -29,5 +31,6 @@ for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=',', quotechar='"'
         base[3] = format_float(base[3])
         for i in range(BASE_COLS,len(row)):
             date = dates[i-BASE_COLS]
-            count = row[i]
-            writer.writerow(base + [case_type, date, count])
+            if date != today:
+                count = row[i]
+                writer.writerow(base + [case_type, date, count])
