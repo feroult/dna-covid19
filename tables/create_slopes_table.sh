@@ -44,7 +44,7 @@ bq query \
                                         covid19.cases c
                                    WHERE
                                         c.outbreak_days >= 0
-                                        AND c.outbreak_countdown <= 10
+                                        AND c.outbreak_countdown < 5
                                    GROUP BY
                                         c.country_region,
                                         c.case_type,
