@@ -2,12 +2,8 @@
 
 echo "Creating cases table..."
 
-RAW_TABLE="covid19.raw_cases"
-TABLE="covid19.cases"
-OUTBREAK_CONFIRMED_CASES="10"
-
 bq query \
-    --destination_table ${TABLE} \
+    --destination_table covid19.cases \
     --replace \
     --use_legacy_sql=false \
 "SELECT 
@@ -21,11 +17,11 @@ bq query \
   start.date outbreak_start_date, 
   DATE_DIFF(cases.date, start.date, DAY) outbreak_days,
   DATE_DIFF(CURRENT_DATE(), cases.date, DAY) outbreak_countdown
-   FROM ${RAW_TABLE} cases
+   FROM covid19.raw_cases cases
 LEFT OUTER JOIN 
  (SELECT country_region, min(date) date
-    FROM ${RAW_TABLE}
-   WHERE cases > ${OUTBREAK_CONFIRMED_CASES}
+    FROM covid19.raw_cases
+   WHERE cases > 10
      and case_type = 'Confirmed'
    GROUP BY country_region) start ON cases.country_region = start.country_region"
    

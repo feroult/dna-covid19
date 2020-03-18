@@ -3,11 +3,10 @@
 DATA_REPO="https://github.com/CSSEGISandData/COVID-19.git"
 DATA_PATH="./COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid"
 STAGING_BUCKET="gs://covid19_outbreak"
-TABLE="covid19.raw_cases"
 
 convert_cases() {
     CASE_TYPE=$1
-    cat ${DATA_PATH}-${CASE_TYPE}.csv | python3 ./convert.py ${CASE_TYPE} > .staging/${CASE_TYPE}.csv
+    cat ${DATA_PATH}-${CASE_TYPE}.csv | python3 py/convert.py ${CASE_TYPE} > .staging/${CASE_TYPE}.csv
 }
 
 update_staging() {
@@ -20,10 +19,14 @@ update_staging() {
     fi
     rm -rf .staging
     mkdir .staging
+    
+    echo "Parsing previous dates..."
     convert_cases "Confirmed"
     convert_cases "Deaths"
     convert_cases "Recovered"
-    python3 ./today.py > .staging/Today.csv
+
+    echo "Fetching today cases..."
+    python3 py/today.py > .staging/Today.csv
 
     NEW_HASH=$(sha256sum .staging/* | sha256sum | cut -d' ' -f1)
     OLD_HASH=$(gsutil cat ${STAGING_BUCKET}/HASH)
@@ -40,7 +43,7 @@ create_raw_table() {
         --replace \
         --skip_leading_rows 1 \
         --source_format=CSV \
-        ${TABLE} \
+        covid19.raw_cases \
         ${STAGING_BUCKET}/*.csv \
         ./schema.json
 }
