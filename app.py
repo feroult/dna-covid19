@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def update():
-    subprocess.run(["./update.sh"])
+    subprocess.run(["./etl/update.sh"])
     return 'ok'
 
 if __name__ == "__main__":
