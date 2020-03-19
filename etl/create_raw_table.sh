@@ -6,7 +6,7 @@ STAGING_BUCKET="gs://covid19_outbreak"
 
 convert_cases() {
     CASE_TYPE=$1
-    cat ${DATA_PATH}-${CASE_TYPE}.csv | python3 py/convert.py ${CASE_TYPE} > .staging/${CASE_TYPE}.csv
+    cat ${DATA_PATH}-${CASE_TYPE}.csv | ./convert.py ${CASE_TYPE} > .staging/${CASE_TYPE}.csv
 }
 
 update_staging() {
@@ -26,7 +26,7 @@ update_staging() {
     convert_cases "Recovered"
 
     echo "Fetching today cases..."
-    python3 py/today.py > .staging/Today.csv
+    ./today.py > .staging/Today.csv
 
     NEW_HASH=$(sha256sum .staging/* | sha256sum | cut -d' ' -f1)
     OLD_HASH=$(gsutil cat ${STAGING_BUCKET}/HASH)
