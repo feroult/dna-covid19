@@ -21,7 +21,7 @@ FULL OUTER JOIN (
     intercept
   FROM
     covid19.cases c,
-    covid19.slopes2 s
+    covid19.slopes_log s
   WHERE
     c.country_region = s.country_region
     AND c.case_type = s.case_type
