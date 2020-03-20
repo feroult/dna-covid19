@@ -7,12 +7,20 @@ bq query \
     --replace \
     --use_legacy_sql=false \
 "SELECT
-  *
+  country_region AS country_region_projection,
+  label,
+  case_type,
+  DATE_ADD(outbreak_start_date, INTERVAL outbreak_days DAY) date,
+  DATE_DIFF(outbreak_start_date, CURRENT_DATE(), DAY) + outbreak_days AS today_diff,
+  outbreak_days,
+  data_type,
+  cases
 FROM (
   SELECT
     country_region,
     country_region || ' (projected)' AS label,
     case_type,
+    outbreak_start_date,
     outbreak_days,
     'Projected' AS data_type,
     p.cases
@@ -20,6 +28,7 @@ FROM (
     SELECT
       country_region,
       case_type,
+      outbreak_start_date,
       outbreak_days,
       CAST(EXP(intercept + slope * outbreak_days) AS INT64) cases
     FROM
@@ -28,6 +37,7 @@ FROM (
       SELECT
         c.country_region,
         c.case_type,
+        c.outbreak_start_date,
         slope,
         intercept
       FROM
@@ -40,7 +50,7 @@ FROM (
     ON
       TRUE) p
   WHERE
-    p.outbreak_days > (
+    p.outbreak_days >= (
     SELECT
       MAX(outbreak_days)
     FROM
@@ -52,6 +62,7 @@ FROM (
     country_region,
     label,
     case_type,
+    outbreak_start_date,
     outbreak_days,
     data_type,
     SUM(cases)
@@ -60,6 +71,7 @@ FROM (
       country_region,
       country_region AS label,
       case_type,
+      outbreak_start_date,
       outbreak_days,
       'Valid' AS data_type,
       c.cases
@@ -71,6 +83,7 @@ FROM (
     country_region,
     label,
     case_type,
+    outbreak_start_date,
     outbreak_days,
     data_type)"
    
