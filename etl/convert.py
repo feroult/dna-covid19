@@ -21,9 +21,6 @@ def format_float(s):
 today = datetime.datetime.utcnow().date().strftime('%Y-%m-%d')
 
 for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=',', quotechar='"'):
-    # day is changing, wait for update
-    if not row[-1] and not row[0] and row[1] != "US":   
-        sys.exit(-1) 
     base = row[0:BASE_COLS]
     if isheader:
         writer.writerow(base + ["Case Type", "Date", "Cases"])
@@ -35,6 +32,5 @@ for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=',', quotechar='"'
         for i in range(BASE_COLS,len(row)):
             date = dates[i-BASE_COLS]
             if date != today:
-                count = row[i]
+                count = row[i] if row[i] else row[i-1] # some data missing when day is changing                               
                 writer.writerow(base + [case_type, date, count])
-
