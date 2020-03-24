@@ -6,5 +6,6 @@ gcloud run deploy covid19outbreak \
     --image gcr.io/${PROJECT_ID}/covid19_outbreak \
     --region us-central1 \
     --platform managed \
+    --memory 512Mi \
     -q
 
