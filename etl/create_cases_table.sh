@@ -12,8 +12,6 @@ bq query \
   cases.date,
   cases.case_type,
   cases.cases,
-  CONCAT(CAST(cases.lat as STRING),',',CAST(cases.long as STRING)) lat_long,
-  ST_GEOGPOINT(cases.long, cases.lat) point,
   start.date outbreak_start_date, 
   DATE_DIFF(cases.date, start.date, DAY) outbreak_days,
   DATE_DIFF(CURRENT_DATE(), cases.date, DAY) outbreak_countdown

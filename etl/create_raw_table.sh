@@ -2,11 +2,19 @@
 
 DATA_REPO="https://github.com/CSSEGISandData/COVID-19.git"
 DATA_PATH="./COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid"
+DAILY_REPORTS="./COVID-19/csse_covid_19_data/csse_covid_19_daily_reports"
 STAGING_BUCKET="gs://covid19_outbreak"
 
 convert_cases() {
     CASE_TYPE=$1
     cat ${DATA_PATH}-${CASE_TYPE}.csv | ./convert.py ${CASE_TYPE} > .staging/${CASE_TYPE}.csv
+}
+
+convert_cases_daily_reports() {
+    for report in `find $DAILY_REPORTS -name \*.csv`; do
+        date=$(echo $report | rev | cut -d/ -f1 | rev | cut -d. -f1)
+        cat $report | ./convert_daily_report.py $date > .staging/Cases-$date.csv
+    done
 }
 
 update_staging() {
@@ -21,9 +29,10 @@ update_staging() {
     mkdir .staging
     
     echo "Parsing previous dates..."
-    convert_cases "Confirmed"
-    convert_cases "Deaths"
-    convert_cases "Recovered"
+    # convert_cases "Confirmed"
+    # convert_cases "Deaths"
+    # convert_cases "Recovered"
+    convert_cases_daily_reports
 
     echo "Fetching today cases..."
     ./today.py > .staging/Today.csv

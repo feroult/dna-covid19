@@ -10,16 +10,6 @@
         "mode": "NULLABLE"
     },
     {
-        "name": "lat",
-        "type": "NUMERIC",
-        "mode": "NULLABLE"
-    },
-    {
-        "name": "long",
-        "type": "NUMERIC",
-        "mode": "NULLABLE"
-    },
-    {
         "name": "case_type",
         "type": "STRING",
         "mode": "NULLABLE"

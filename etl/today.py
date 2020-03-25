@@ -11,9 +11,6 @@ REFERER = 'https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html'
 
 today = datetime.datetime.utcnow().date().strftime('%Y-%m-%d')
 
-def format_float(s):
-    return '{0:.4f}'.format(float(s))
-
 response = requests.get(
     URL,
     headers={'referer': REFERER},
@@ -25,12 +22,11 @@ countries = json_response['features']
 writer = csv.writer(sys.stdout, delimiter=',',
                     quotechar="\"", quoting=csv.QUOTE_MINIMAL)
 
-writer.writerow(['Province/State', 'Country/Region', 'Lat',
-              'Long', 'Case Type', 'Date', 'Cases'])
+writer.writerow(['Province/State', 'Country/Region', 'Case Type', 'Date', 'Cases'])
 
 for country in countries:
     a = country['attributes']
-    base = ['', a['Country_Region'], format_float(a['Lat']), format_float(a['Long_'])]
+    base = ['', a['Country_Region']]
     writer.writerow(base + ['Confirmed', today, a['Confirmed']])
     writer.writerow(base + ['Deaths', today, a['Deaths']])
     writer.writerow(base + ['Recovered', today, a['Recovered']])
