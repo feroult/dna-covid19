@@ -13,7 +13,6 @@ convert_cases() {
 convert_cases_daily_reports() {
     for report in `find $DAILY_REPORTS -name \*.csv`; do
         date=$(echo $report | rev | cut -d/ -f1 | rev | cut -d. -f1)
-        echo $report
         ./convert_daily_report.py $date $report .staging/Cases-$date.csv
     done
 }
