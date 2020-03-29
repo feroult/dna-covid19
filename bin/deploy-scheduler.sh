@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -x
 
 PROJECT_ID="feroult-cloud"
 JOB_ID="update-covid19"
