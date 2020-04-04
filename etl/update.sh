@@ -7,6 +7,7 @@ run() {
     ./create_cases_table.sh
     ./create_slopes_table.sh
     ./create_projections_table.sh
+    ./export_public_csv.sh
 }
 
 (cd $DIR && run)
