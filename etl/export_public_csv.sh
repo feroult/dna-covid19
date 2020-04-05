@@ -1,7 +1,11 @@
-#!/bin/sh 
+#!/bin/bash
+
+DATE_TIME=$(printf '%(%Y%m%d-%H)T' $(( $(printf '%(%s)T') - 60 * 60 )))
+
+echo "Exporting ${DATE_TIME}..."
 
 BUCKET="gs://covid19-john-hopkins-university-unofficial-export"
-FILE="cases-$(date -v-60M '+%Y%m%d-%H')h.csv.gz"
+FILE="cases-${DATE_TIME}h.csv.gz"
 URI="${BUCKET}/${FILE}"
 
 export_last_period() {
