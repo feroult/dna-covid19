@@ -18,7 +18,7 @@ export_last_period() {
 
 update_index_page() {
     list=""
-    for file in $(gsutil ls ${BUCKET}/*.gz | sort -r); do
+    for file in $(gsutil ls ${BUCKET}/*.gz | sort -r | head -10); do
         url="https://storage.googleapis.com/$(echo $file | cut -c6-)"
         desc="$(echo $file | rev | cut -d/ -f1 | rev)"
         list="${list}<p><a href=\"${url}\">${desc}</a></p>"
